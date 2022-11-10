@@ -4,9 +4,49 @@
 # Do not make changes to this file unless you know what you are doing--modify
 # the SWIG interface file instead.
 
+import db
+
 from sys import version_info as _swig_python_version_info
 if _swig_python_version_info < (2, 7, 0):
     raise RuntimeError("Python 2.7 or later required")
+
+try:
+    _swig_property = property
+except NameError:
+    pass  # Python < 2.2 doesn't have 'property'.
+
+try:
+    import builtins as __builtin__
+except ImportError:
+    import __builtin__
+
+def _swig_setattr_nondynamic(self, class_type, name, value, static=1):
+    if (name == "thisown"):
+        return self.this.own(value)
+    if (name == "this"):
+        if type(value).__name__ == 'SwigPyObject':
+            self.__dict__[name] = value
+            return
+    method = class_type.__swig_setmethods__.get(name, None)
+    if method:
+        return method(self, value)
+    if (not static):
+        object.__setattr__(self, name, value)
+    else:
+        raise AttributeError("You cannot add attributes to %s" % self)
+
+
+def _swig_setattr(self, class_type, name, value):
+    return _swig_setattr_nondynamic(self, class_type, name, value, 0)
+
+
+def _swig_getattr(self, class_type, name):
+    if (name == "thisown"):
+        return self.this.own()
+    method = class_type.__swig_getmethods__.get(name, None)
+    if method:
+        return method(self)
+    raise AttributeError("'%s' object has no attribute '%s'" % (class_type.__name__, name))
 
 
 def _swig_repr(self):
@@ -17,8 +57,6 @@ def _swig_repr(self):
     return "<%s.%s; %s >" % (self.__class__.__module__, self.__class__.__name__, strthis,)
 
 
-
-# classes
 
 class Select(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -668,10 +706,16 @@ class SonicDBConfig(object):
 
 class SonicV2Connector_Native(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, SonicV2Connector_Native, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, SonicV2Connector_Native, name)
     __repr__ = _swig_repr
 
     def __init__(self, *args, **kwargs):
-        pass
+        print(kwargs)
+        # self.Host = kwargs['host']
+        return None
 
     def getNamespace(self):
         return None
@@ -731,7 +775,7 @@ class SonicV2Connector_Native(object):
 
 
 class SonicV2Connector(SonicV2Connector_Native):
-
+    APPL_DB = None
 ## Note: there is no easy way for SWIG to map ctor parameter netns(C++) to namespace(python)
     def __init__(self, use_unix_socket_path = False, namespace = '', **kwargs):
         if 'host' in kwargs:
@@ -773,6 +817,7 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
     INIT_INDICATOR = None
 
     def __init__(self, *args, **kwargs):
+        self.client = db.RedisClientNaive()
         pass
 
     def db_connect(self, db_name, wait_for_init=False, retry_on=False):
@@ -794,7 +839,7 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
         return None
 
     def get_table(self, table):
-        return None
+        return self.client.get_table(table)
 
     def delete_table(self, table):
         return None
@@ -900,9 +945,9 @@ class ConfigDBConnector(SonicV2Connector, ConfigDBConnector_Native):
         if raw_data is None:
             return None
         typed_data = {}
+        print(raw_data)
         for raw_key in raw_data:
             key = raw_key
-
 # "NULL:NULL" is used as a placeholder for objects with no attributes
             if key == "NULL":
                 pass
