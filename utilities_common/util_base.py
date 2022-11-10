@@ -2,14 +2,14 @@ import os
 import pkgutil
 import importlib
 
-from sonic_py_common import logger
+# from sonic_py_common import logger
 
 # Constants ====================================================================
 PDDF_SUPPORT_FILE = '/usr/share/sonic/platform/pddf_support'
 
 # Helper classs
 
-log = logger.Logger()
+# log = logger.Logger()
 
 
 class UtilHelper(object):
@@ -26,12 +26,12 @@ class UtilHelper(object):
             if ispkg:
                 yield from self.load_plugins(importlib.import_module(module_name))
                 continue
-            log.log_debug('importing plugin: {}'.format(module_name))
+            # log.log_debug('importing plugin: {}'.format(module_name))
             try:
                 module = importlib.import_module(module_name)
             except Exception as err:
-                log.log_error('failed to import plugin {}: {}'.format(module_name, err),
-                              also_print_to_console=True)
+                # log.log_error('failed to import plugin {}: {}'.format(module_name, err),
+                #               also_print_to_console=True)
                 continue
 
             yield module
@@ -40,13 +40,13 @@ class UtilHelper(object):
         """ Register plugin in top-level command root_command. """
 
         name = plugin.__name__
-        log.log_debug('registering plugin: {}'.format(name))
+        # log.log_debug('registering plugin: {}'.format(name))
         try:
             plugin.register(root_command)
         except Exception as err:
-            log.log_error('failed to import plugin {}: {}'.format(name, err),
-                          also_print_to_console=True)
-
+            # log.log_error('failed to import plugin {}: {}'.format(name, err),
+            #               also_print_to_console=True)
+            pass
     # try get information from platform API and return a default value if caught NotImplementedError
     def try_get(self, callback, default=None):
         """

@@ -2,8 +2,8 @@ import argparse
 import functools
 
 import click
-import netifaces
-import pyroute2
+# import netifaces
+# import pyroute2
 from natsort import natsorted
 from sonic_py_common import multi_asic, device_info
 from utilities_common import constants
@@ -169,22 +169,24 @@ def multi_asic_args(parser=None):
     return parser
 
 def multi_asic_get_ip_intf_from_ns(namespace):
-    if namespace != constants.DEFAULT_NAMESPACE:
-        pyroute2.netns.pushns(namespace)
-    interfaces = natsorted(netifaces.interfaces())
+    # if namespace != constants.DEFAULT_NAMESPACE:
+    #     pyroute2.netns.pushns(namespace)
+    # interfaces = natsorted(netifaces.interfaces())
 
-    if namespace != constants.DEFAULT_NAMESPACE:
-        pyroute2.netns.popns()
+    # if namespace != constants.DEFAULT_NAMESPACE:
+    #     pyroute2.netns.popns()
 
-    return interfaces
+    # return interfaces
+    return {}
 
 
 def multi_asic_get_ip_intf_addr_from_ns(namespace, iface):
-    if namespace != constants.DEFAULT_NAMESPACE:
-        pyroute2.netns.pushns(namespace)
-    ipaddresses = netifaces.ifaddresses(iface)
+    # if namespace != constants.DEFAULT_NAMESPACE:
+    #     pyroute2.netns.pushns(namespace)
+    # ipaddresses = netifaces.ifaddresses(iface)
 
-    if namespace != constants.DEFAULT_NAMESPACE:
-        pyroute2.netns.popns()
+    # if namespace != constants.DEFAULT_NAMESPACE:
+    #     pyroute2.netns.popns()
 
-    return ipaddresses
+    # return ipaddresses
+    return {}
