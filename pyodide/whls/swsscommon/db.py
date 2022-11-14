@@ -5,89 +5,89 @@ class DBClient:
         self.Client = None
 
     '''operatioin'''
-    @abstractmethod(callable)
+    @abstractmethod
     def connect(self, db_name):
         # connect to database
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def close(self, db_name):
         # close the connection
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def select(self, db):
         # select a database in redis
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def get_table(slef, table):
         # get all entries in the table
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def delete_table(slef, table):
         # delete the tables 
         pass    
 
-    @abstractmethod(callable)
+    @abstractmethod
     def flushdb(self):
         pass
 
 
     '''key related commands'''
-    @abstractmethod(callable)
+    @abstractmethod
     def keys(self, key):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def exists(self, key):
         pass
     
-    @abstractmethod(callable)
+    @abstractmethod
     def delete(self, *args):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def scan(self, *args, **kwargs):
         pass
 
 
     
     '''hash related commands'''
-    @abstractmethod(callable)
+    @abstractmethod
     def hset(self, key, field, value):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def hmset(self, multiHash):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def hget(self, key, field):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def hgetall(self, key):
         return None
 
 
-    @abstractmethod(callable)
+    @abstractmethod
     def hexists(self, key, field):
         pass
 
 
 
     '''key related commands'''
-    @abstractmethod(callable)
+    @abstractmethod
     def set(self, db_name, _hash, key, val, blocking=False):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def incr(self, key):
         pass
 
-    @abstractmethod(callable)
+    @abstractmethod
     def decr(self, key):
         pass
 
@@ -97,7 +97,7 @@ class RedisClientNaive(DBClient):
         pass
 
     def get_table(self, table):
-        return {'test': {'0': ['111','112','113']}}
+        return {'test': {'auto_restart': ['111','112','113']}}
     
     def connect(self, db_name):
         pass
@@ -105,3 +105,56 @@ class RedisClientNaive(DBClient):
     def close(self, db_name):
         pass
 
+    def select(self, db):
+        # select a database in redis
+        pass
+
+    def delete_table(slef, table):
+        # delete the tables
+        pass    
+
+    def flushdb(self):
+        pass
+
+
+    '''key related commands'''
+    def keys(self, key):
+        pass
+
+    def exists(self, key):
+        pass
+    
+    def delete(self, *args):
+        pass
+
+    def scan(self, *args, **kwargs):
+        pass
+
+
+    
+    '''hash related commands'''
+    def hset(self, key, field, value):
+        pass
+
+    def hmset(self, multiHash):
+        pass
+
+    def hget(self, key, field):
+        pass
+
+    def hgetall(self, key):
+        return None
+
+    def hexists(self, key, field):
+        pass
+
+
+    '''key related commands'''
+    def set(self, db_name, _hash, key, val, blocking=False):
+        pass
+
+    def incr(self, key):
+        pass
+
+    def decr(self, key):
+        pass
