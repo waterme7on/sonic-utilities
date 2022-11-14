@@ -15,6 +15,9 @@ dist/
 coverage.xml
 htmlcov/
 
+.idea/
+*.iml
+
 # Ignores for sonic-utilities-data
 sonic-utilities-data/debian/*
 !sonic-utilities-data/debian/changelog

@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>SONiC CLI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/xterm@4.19.0/lib/xterm.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+</head>
+
+<body>
+<h2 style='font-family: "Cascadia Code", Menlo, monospace'>SONiC CLI</h2>
+<label class="mdc-text-field mdc-text-field--filled">
+    <span class="mdc-text-field__ripple"></span>
+    <span class="mdc-floating-label" id="my-label-id"></span>
+    <input class="mdc-text-field__input" type="text" value="ws://10.190.172.200:5000" id="address"
+           aria-labelledby="my-label-id">
+    <!-- <span class="mdc-line-ripple"></span> -->
+    <button class="mdc-button mdc-button--raised" id="cbutton">
+        <span class="mdc-button__label" id="cbuttonText">Connect</span>
+    </button>
+</label>
+<br></br>
+<div style="border-radius: 4px; overflow-y: hidden; width: 690px">
+    <div id="terminal" style="padding: 10px 10px; border-radius: 4px; background-color: #282a36; overflow-y: hidden">
+    </div>
+</div>
+</div>
+
+<!--    view-source:https://xtermjs.org/-->
+<!--    https://xtermjs.org/css/main.css-->
+<!--    https://xtermjs.org/js/demo.js-->
+
+<script>
+    let term = new Terminal({
+        rows: 35,
+        fontFamily: '"Cascadia Code", Menlo, monospace',
+        cursorStyle: 'block', //光标样式
+        cursorBlink: true, // 光标闪烁
+        convertEol: true, //启用时，光标将设置为下一行的开头
+        disableStdin: false, //是否应禁用输入。
+        theme: {
+            foreground: '#eff0eb',
+            background: '#282a36',
+            selection: '#97979b33',
+            black: '#282a36',
+            brightBlack: '#686868',
+            red: '#ff5c57',
+            brightRed: '#ff5c57',
+            green: '#5af78e',
+            brightGreen: '#5af78e',
+            yellow: '#f3f99d',
+            brightYellow: '#f3f99d',
+            blue: '#57c7ff',
+            brightBlue: '#57c7ff',
+            magenta: '#ff6ac1',
+            brightMagenta: '#ff6ac1',
+            cyan: '#9aedfe',
+            brightCyan: '#9aedfe',
+            white: '#f1f1f0',
+            brightWhite: '#eff0eb'
+        }
+    });
+    term.open(document.getElementById('terminal'));
+
+
+    function runFakeTerminal() {
+        var buf = "";
+        if (term._initialized) {
+            return;
+        }
+
+        term._initialized = true;
+
+        term.prompt = () => {
+            term.write('\r\n~$ ');
+        };
+
+        term.writeln('Welcome to SONiC CLI');
+        prompt(term);
+
+        term.onKey(e => {
+            const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
+
+            // enter key
+            if (e.domEvent.keyCode === 13) {
+                console.log(buf)
+                buf = buf.replace(/\n/g, '')
+                if (buf != "") {
+                    wsSend(buf);
+                }
+                buf = "";
+                prompt(term);
+            } else if (e.domEvent.keyCode === 8) { // BackSpace key
+                if (term._core.buffer.x > 2) {
+                    term.write('\b \b');
+                }
+                buf = buf.slice(0, buf.length - 1);
+            } else if (printable) {
+                buf += e.key;
+                term.write(e.key);
+            }
+        });
+    }
+
+    function prompt(term) {
+        term.write('\r\n$ ');
+    }
+
+    // var host = 'ws://localhost:5000';
+    var socket = new Object();
+
+
+    $(document).ready(function () {
+        $("#cbutton").click(function () {
+            var val = $("#cbuttonText").text();
+            console.log(val);
+            if (val == "Connect") {
+                socket = wsConnect();
+                $("#cbuttonText").text("Disconnect");
+            } else {
+                socket.close();
+                $("#cbuttonText").text("Connect");
+            }
+        })
+        runFakeTerminal();
+    });
+
+    function wsSend(data) {
+        try {
+            var req = new Object();
+            req.type = "Shell";
+            req.data = data;
+            socket.send(JSON.stringify(req));
+        } catch (error) {
+            term.write(`\n[error] ${error.message}`);
+        }
+    }
+
+    function register() {
+        var req = new Object();
+        req.type = "Register";
+        req.data = "{\n    \"owner\": \"sonic\",\n    \"name\": \"swa-cli\",\n    \"displayName\": \"CLI App Example\",\n    \"manifest\": {\n      \"ports\": [179, 2601, 2605, 2616, 2620],\n      \"readableDbs\": [],\n      \"writableDbs\": [\"APPL_DB\", \"STATE_DB\"],\n      \"files\": [\"/etc/sonic\", \"/etc/sonic/frr\", \"/var/run/redis\"]\n    }\n  }";
+        socket.send(JSON.stringify(req));
+    }
+
+    function wsConnect() {
+        host = $("#address").val();
+        console.log("host:", host)
+        socket = new WebSocket(host);
+
+        socket.onopen = function (e) {
+            register();
+            // console.log("[open] Connection established");
+            term.write("\nConnection established\n");
+        };
+
+        socket.onmessage = function (event) {
+            console.log(`[message] Data received from server: ${event.data}`);
+            obj = JSON.parse(event.data);
+            try {
+                term.write(obj["data"]);
+            } catch (error) {
+                console.log(error);
+            }
+            prompt(term);
+        };
+
+        socket.onclose = function (event) {
+            if (event.wasClean) {
+                console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}\n`);
+            } else {
+                // e.g. server process killed or network down
+                // event.code is usually 1006 in this case
+                console.log('[close] Connection died\n');
+            }
+            term.write('\nConnection closed.\n');
+            $("#cbuttonText").text("Connect");
+            prompt(term);
+            socket = {};
+        };
+
+        socket.onerror = function (error) {
+            term.write(`\n[error] ${error.message}\n`);
+            prompt(term);
+        };
+        return socket
+    }
+
+
+</script>
+
+</body>
+
+</html>
