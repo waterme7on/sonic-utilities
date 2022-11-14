@@ -131,13 +131,25 @@
 
     function wsSend(data) {
         try {
-            var req = new Object();
-            req.type = "Shell";
-            req.data = data;
-            socket.send(JSON.stringify(req));
+            const res = getResponse(data);
+            addResponse(res);
         } catch (error) {
             term.write(`\n[error] ${error.message}`);
         }
+    }
+
+    function getResponse(data) {
+        const res = "\nhaha " + data;
+        return res;
+    }
+
+    function addResponse(res) {
+        try {
+            term.write(res);
+        } catch (error) {
+            console.log(error);
+        }
+        prompt(term);
     }
 
     function register() {
