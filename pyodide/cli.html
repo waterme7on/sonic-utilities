@@ -86,8 +86,9 @@
         //     cli()
         // `));
         // pyodide.runPython("print(1 + 2)");
+
+        term.write('\r\n$ ');
     }
-    main();
 
     let term = new Terminal({
         rows: 35,
@@ -120,6 +121,26 @@
     });
     term.open(document.getElementById('terminal'));
 
+    main(term);
+
+    // https://stackoverflow.com/questions/20256760/javascript-console-log-to-html
+    (function (term) {
+        console.old = console.log;
+        console.log = function () {
+            var output = "", arg, i;
+
+            for (i = 0; i < arguments.length; i++) {
+                output += arguments[i];
+            }
+
+            if (output === "api ready") {
+                return;
+            }
+
+            term.writeln(output);
+            console.old.apply(undefined, arguments);
+        };
+    })(term);
 
     function runFakeTerminal() {
         var buf = "";
@@ -133,8 +154,8 @@
             term.write('\r\n~$ ');
         };
 
-        term.writeln('Welcome to SONiC CLI');
-        prompt(term);
+        term.writeln('Welcome to SONiC CLI based on WASM\n');
+        // prompt(term);
 
         term.onKey(e => {
             const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
@@ -147,7 +168,7 @@
                     wsSend(buf);
                 }
                 buf = "";
-                prompt(term);
+                prompt2(term);
             } else if (e.domEvent.keyCode === 8) { // BackSpace key
                 if (term._core.buffer.x > 2) {
                     term.write('\b \b');
@@ -162,6 +183,10 @@
 
     function prompt(term) {
         term.write('\r\n$ ');
+    }
+
+    function prompt2(term) {
+        term.write('$ ');
     }
 
     // var host = 'ws://localhost:5000';
@@ -184,8 +209,10 @@
     });
 
     function wsSend(data) {
-        const res = getResponse(data);
-        addResponse(res);
+        // const res = getResponse(data);
+        // addResponse(res);
+
+        getResponse(data);
 
         // try {
         //     const res = getResponse(data);
@@ -203,12 +230,15 @@
             from show.main import cli
             import sys
             sys.argv = ['show', 'aaa']
-            # cli()
-            res = "This is the result for ${data}!"
+            try:
+                cli()
+            except:
+                pass
+            # res = "This is the result for ${data}!"
         `);
-        let res = pyodide.globals.get("res");
-        res = "\n" + res;
-        return res;
+        // let res = pyodide.globals.get("res");
+        // res = "\n" + res;
+        // return res;
     }
 
     function addResponse(res) {
