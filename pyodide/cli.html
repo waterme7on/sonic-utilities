@@ -41,6 +41,7 @@
         pyodide = await loadPyodide();
         await pyodide.loadPackage("micropip");
         const micropip = pyodide.pyimport("micropip");
+        await micropip.install('ssl')
 
         source = "http://localhost:8080/"
         let whl_dependencies = [
@@ -49,6 +50,8 @@
           "sonic_platform_common-1.0-py3-none-any.whl", "sonic_yang_models-1.0-py3-none-any.whl", "redis_dump_load-1.1-py3-none-any.whl", "swsssdk-2.0.1-py3-none-any.whl",
           "sonic_utilities-1.7-py3-none-any.whl", "lazy_object_proxy-1.7.1-pp37.pp38-none-any.whl",'swsscommon-1.0.3-py3-none-any.whl',
           // 'netifaces-0.11.0-py3-none-any.whl', // ununsable
+        //   'ps_websocket-1.0-py3-none-any.whl',
+            'asyncclick-8.1.3.2-py3-none-any.whl',
         ]
         let pypi_dependencies = ['https://files.pythonhosted.org/packages/3e/58/61c4b4fd9e597affdcd3347d5991fa5be404af26f19932d3116b67e133da/natsort-8.2.0-py3-none-any.whl',
           'https://files.pythonhosted.org/packages/ff/cd/9cdfea8fc45c56680b798db6a55fa60a22e2d3d3ccf54fc729d083b50ce4/netaddr-0.8.0-py2.py3-none-any.whl',
@@ -56,6 +59,9 @@
           // 'https://files.pythonhosted.org/packages/a6/91/86a6eac449ddfae239e93ffc1918cf33fd9bab35c04d1e963b311e347a73/netifaces-0.11.0.tar.gz',
           'https://files.pythonhosted.org/packages/d7/4d/7c94b84936002d30dc7908d832955af074099c3d2c0cbfd818b89c618432/pyroute2-0.7.3-py3-none-any.whl',
           'https://files.pythonhosted.org/packages/40/44/4a5f08c96eb108af5cb50b41f76142f0afa346dfa99d5296fe7202a11854/tabulate-0.9.0-py3-none-any.whl',
+        //   'https://files.pythonhosted.org/packages/cf/b5/edd339d42867431d961f592c56f659275e6efe6245e8175039adc230c578/asyncclick-8.1.3.4-py3-none-any.whl',
+          'https://files.pythonhosted.org/packages/77/2b/b4c0b7a3f3d61adb1a1e0b78f90a94e2b6162a043880704b7437ef297cad/anyio-3.6.2-py3-none-any.whl',
+          'https://files.pythonhosted.org/packages/c3/a0/5dba8ed157b0136607c7f2151db695885606968d1fae123dc3391e0cfdbf/sniffio-1.3.0-py3-none-any.whl',
         ]
         for (let index = 0; index < whl_dependencies.length; index++) {
           await pyodide.loadPackage(source + 'whls/' + whl_dependencies[index])
@@ -166,10 +172,15 @@
                 console.log("")
                 buf = buf.replace(/\n/g, '')
                 if (buf != "") {
-                    wsSend(buf);
+                    wsSend(buf)
+                    // .then(
+                    //     function(value){
+                    //         term.write("\n----\n"+value+"\n------\n")
+                    //     }
+                    // );
                 }
                 buf = "";
-                prompt2(term);
+                prompt(term);
             } else if (e.domEvent.keyCode === 8) { // BackSpace key
                 if (term._core.buffer.x > 2) {
                     term.write('\b \b');
@@ -212,9 +223,9 @@
     function wsSend(data) {
         // const res = getResponse(data);
         // addResponse(res);
-
-        getResponse(data);
-
+        term.write('\n')
+        value = getResponse(data);
+        return value
         // try {
         //     const res = getResponse(data);
         //     addResponse(res);
@@ -225,20 +236,40 @@
 
     function getResponse(data) {
         // const res = "\nhaha " + data;
-        pyodide.runPython(`
+        value = pyodide.runPython(`
+            # import swsscommon
+            # import asyncio
+            # async def main():
+            #     client = swsscommon.ConfigDBConnector_Native()
+            #     value = await client.get_table('*')
+            #     print("test get_table:", value)
+            #     return value
+            # asyncio.create_task(main())
+            #     # await asyncio.sleep(1)
+            #     # value = await client.get_table('*')
+            #     # print(value)
+            
             import os
+            import asyncio
+            import anyio
             os.listdir('.')
             from show.main import cli
             import sys
             sys.argv = '${data}'.split()
             # sys.argv = ['show', 'aaa']
-            try:
-                cli()
-            except:
-                pass
-            # res = "This is the result for ${data}!"
+            async def main():
+                value = await cli()
+                print("output of cli:", value)
+                return value
+            asyncio.create_task(main())
+            #    try:
+            #    # cli()
+            #except:
+            #    pass
+            #res = "This is the result for ${data}!"
         `);
-        term.write('\n');
+        return value
+        // term.write('\n');
 
         // let res = pyodide.globals.get("res");
         // res = "\n" + res;
@@ -247,7 +278,7 @@
 
     function addResponse(res) {
         try {
-            term.write(res);
+            prompt(res);
         } catch (error) {
             console.log(error);
         }

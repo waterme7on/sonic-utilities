@@ -119,7 +119,7 @@ class RedisClientNaive(DBClient):
 
     '''key related commands'''
     def keys(self, key):
-        pass
+        return {'a':'ok', 'b':'ok'}
 
     def exists(self, key):
         pass
@@ -158,3 +158,154 @@ class RedisClientNaive(DBClient):
 
     def decr(self, key):
         pass
+
+# from abc import abstractmethod
+from base import send_redis_command
+
+# \sonic-buildimage\src\sonic-swss-common\common\database_config.json
+db_dict = {
+    "APPL_DB": "0",
+    "ASIC_DB": "1",
+    "COUNTERS_DB": "2",
+    "LOGLEVEL_DB": "3",
+    "CONFIG_DB": "4",
+    "PFC_WD_DB": "5",
+    "FLEX_COUNTER_DB": "5",
+    "STATE_DB": "6",
+    "SNMP_OVERLAY_DB": "7",
+    "RESTAPI_DB": "8",
+    "GB_ASIC_DB": "9",
+    "GB_COUNTERS_DB": "10",
+    "GB_FLEX_COUNTER_DB": "11",
+    "CHASSIS_APP_DB": "12",
+    "CHASSIS_STATE_DB": "13",
+    "APPL_STATE_DB": "14",
+}
+
+class RedisClient(DBClient):
+    def __init__(self):
+        self.Client = None
+
+    '''operatioin'''
+    # @abstractmethod
+    async def connect(self, db_name):
+        # connect to database
+        db = db_dict[db_name]
+        await self.select(db)
+
+    # @abstractmethod
+    async def close(self, db_name):
+        # close the connection
+        await self.select("0")
+
+    # @abstractmethod
+    async def select(self, db):
+        # select a database in redis
+        status, msg, data = await send_redis_command("select", db)
+        return data
+
+    # @abstractmethod
+    async def get_table(self, table):
+        # get all entries in the table
+
+        # \sonic-buildimage\src\sonic-yang-models\tests\files\sample_config_db.json
+        # Is this right?
+        # return {'test': {'auto_restart': ['111','112','113']}}
+        return await self.hgetall(table)
+
+    # @abstractmethod
+    async def delete_table(self, table):
+        #
+        # delete the tables
+
+        # \sonic-buildimage\src\sonic-yang-models\tests\files\sample_config_db.json
+        # Is this right?
+        return await self.delete(table)
+
+    # @abstractmethod
+    async def flushdb(self):
+        status, msg, data = await send_redis_command("flushdb")
+        return data
+
+
+    '''key related commands'''
+    # @abstractmethod
+    async def keys(self, key):
+        # Is this right?
+        status, msg, data = await send_redis_command("keys", "*")
+        return data
+
+    # @abstractmethod
+    async def exists(self, key):
+        status, msg, data = await send_redis_command("exists", key)
+        return data
+
+    # @abstractmethod
+    async def delete(self, *args):
+        status, msg, data = await send_redis_command("del", args)
+        return data
+
+    # @abstractmethod
+    async def scan(self, *args, **kwargs):
+        # https://redis.io/commands/scan/
+        # Is this right?
+        status, msg, data = await send_redis_command("scan", args)
+        return data
+
+
+
+    '''hash related commands'''
+    # @abstractmethod
+    async def hset(self, key, field, value):
+        # https://redis.io/commands/hset/
+        status, msg, data = await send_redis_command("hset", key, field, value)
+        return data
+
+    # @abstractmethod
+    async def hmset(self, multiHash):
+        # https://redis.io/commands/hmset/
+        # deprecated, replaced by hset, and don't know how to use the arg: multiHash
+        # Is this right?
+        pass
+
+    # @abstractmethod
+    async def hget(self, key, field):
+        # https://redis.io/commands/hget/
+        status, msg, data = await send_redis_command("hget", key, field)
+        return data
+
+    # @abstractmethod
+    async def hgetall(self, key):
+        # https://redis.io/commands/hgetall/
+        status, msg, data = await send_redis_command("hgetall", key)
+        return data
+
+    # @abstractmethod
+    async def hexists(self, key, field):
+        # https://redis.io/commands/hexists/
+        status, msg, data = await send_redis_command("hexists", key, field)
+        return data
+
+
+
+    '''key related commands'''
+    # @abstractmethod
+    async def set(self, db_name, _hash, key, val, blocking=False):
+        # Is this right?
+        db = db_dict[db_name]
+        await self.select(db)
+
+        status, msg, data = await send_redis_command("set", key, val)
+        return data
+
+    # @abstractmethod
+    async def incr(self, key):
+        # https://redis.io/commands/incr/
+        status, msg, data = await send_redis_command("incr", key)
+        return data
+
+    # @abstractmethod
+    async def decr(self, key):
+        # https://redis.io/commands/decr/
+        status, msg, data = await send_redis_command("decr", key)
+        return data

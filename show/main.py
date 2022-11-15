@@ -4,7 +4,8 @@ import subprocess
 import sys
 import re
 
-import click
+# import click
+import asyncclick as click
 import lazy_object_proxy
 import utilities_common.cli as clicommon
 from sonic_py_common import multi_asic
@@ -231,16 +232,15 @@ def is_gearbox_configured():
     """
     Checks whether Gearbox is configured or not
     """
-    app_db = SonicV2Connector()
-    app_db.connect(app_db.APPL_DB)
-
-    keys = app_db.keys(app_db.APPL_DB, '*')
-
-    # If any _GEARBOX_TABLE:phy:* records present in APPL_DB, then the gearbox is configured
-    if any(re.match(GEARBOX_TABLE_PHY_PATTERN, key) for key in keys):
-        return True
-    else:
-        return False
+    return True
+    # app_db = SonicV2Connector()
+    # app_db.connect(swsscommon.APPL_DB)
+    # keys = app_db.keys(swsscommon.APPL_DB, '*')
+    # # If any _GEARBOX_TABLE:phy:* records present in APPL_DB, then the gearbox is configured
+    # if any(re.match(GEARBOX_TABLE_PHY_PATTERN, key) for key in keys):
+    #     return True
+    # else:
+    #     return False
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help', '-?'])
 
@@ -252,12 +252,14 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help', '-?'])
 # TODO: Consider changing function name to 'show' for better understandability
 @click.group(cls=clicommon.AliasedGroup, context_settings=CONTEXT_SETTINGS)
 @click.pass_context
-def cli(ctx):
+async def cli(ctx):
     """SONiC command line - 'show' command"""
 
     # Load database config files
     load_db_config()
-    ctx.obj = Db()
+    # print("[DEBUG]loaded config")
+    ctx.obj = await Db()
+    # print("[DEBUG]cli done")
 
 
 # Add groups from other modules
@@ -1737,10 +1739,15 @@ def services():
 
 @cli.command()
 @clicommon.pass_db
-def aaa(db):
+async def aaa(db):
+    # print('[DEBUG]enter aaa')
     """Show AAA configuration"""
     config_db = db.cfgdb
-    data = config_db.get_table('AAA')
+    # print("[DEBUG]show aaa configuration")
+    # data = {'test': {'auto_restart': ['111','112','113']}}
+    data = await config_db.get_table('AAA')
+    # print('[DEBUG]',data)
+    # print('[DEBUG]',type(data))
     output = ''
 
     aaa = {

@@ -713,8 +713,10 @@ class SonicV2Connector_Native(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args, **kwargs):
-        print(kwargs)
-        # self.Host = kwargs['host']
+        # print(kwargs)
+        # print("[DEBUG]SonicV2Connector_Native.__init__")
+        self.client = db.RedisClient()
+        # print("[DEBUG]SonicV2Connector_Native.__init__")
         return None
 
     def getNamespace(self):
@@ -745,7 +747,7 @@ class SonicV2Connector_Native(object):
         return None
 
     def keys(self, *args, **kwargs):
-        return None
+        return self.client.keys('*')
 
     def scan(self, *args, **kwargs):
         return None
@@ -817,7 +819,10 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
     INIT_INDICATOR = None
 
     def __init__(self, *args, **kwargs):
-        self.client = db.RedisClientNaive()
+        # print("[DEBUG]ConfigDBConnector_Native.__init__")
+        # supe(ConfigDBConnector_Native, self).__init__(*args, **kwargs)
+        self.client = db.RedisClient()
+        # print("[DEBUG]ConfigDBConnector_Native.__init__")
         pass
 
     def db_connect(self, db_name, wait_for_init=False, retry_on=False):
@@ -838,8 +843,10 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
     def get_keys(self, table, split=True):
         return None
 
-    def get_table(self, table):
-        return self.client.get_table(table)
+    async def get_table(self, table):
+        print("[DEBUG]ConfigDBConnector_Native: get table", table)
+        # return {'test': {'auto_restart': ['111','112','113']}}
+        return await self.client.get_table(table)
 
     def delete_table(self, table):
         return None
