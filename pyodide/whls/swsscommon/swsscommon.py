@@ -713,21 +713,19 @@ class SonicV2Connector_Native(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args, **kwargs):
-        print(kwargs)
-        # self.Host = kwargs['host']
-        return None
+        self.client = db.RedisClient()
 
     def getNamespace(self):
         return None
 
     def connect(self, db_name, retry_on=True):
-        return None
+        return self.client.connect(db_name)
 
     def close(self, db_name):
-        return None
+        return self.client.close(db_name)
 
     def get_db_list(self):
-        return {}
+        return ('STATE_DB', 'APPL_DB', 'GB_FLEX_COUNTER_DB', 'APPL_STATE_DB', 'ASIC_DB', 'CONFIG_DB', 'COUNTERS_DB', 'LOGLEVEL_DB', 'GB_ASIC_DB', 'GB_COUNTERS_DB', 'PFC_WD_DB', 'FLEX_COUNTER_DB', 'RESTAPI_DB', 'SNMP_OVERLAY_DB')
 
     def get_dbid(self, db_name):
         return None
@@ -775,7 +773,6 @@ class SonicV2Connector_Native(object):
 
 
 class SonicV2Connector(SonicV2Connector_Native):
-    APPL_DB = None
 ## Note: there is no easy way for SWIG to map ctor parameter netns(C++) to namespace(python)
     def __init__(self, use_unix_socket_path = False, namespace = '', **kwargs):
         if 'host' in kwargs:
@@ -817,11 +814,11 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
     INIT_INDICATOR = None
 
     def __init__(self, *args, **kwargs):
-        self.client = db.RedisClientNaive()
+        super(ConfigDBConnector_Native, self).__init__(args, kwargs)
         pass
 
     def db_connect(self, db_name, wait_for_init=False, retry_on=False):
-        return None
+        return self.client.connect(db_name)
 
     def connect(self, wait_for_init=True, retry_on=False):
         return None
@@ -945,7 +942,7 @@ class ConfigDBConnector(SonicV2Connector, ConfigDBConnector_Native):
         if raw_data is None:
             return None
         typed_data = {}
-        print(raw_data)
+
         for raw_key in raw_data:
             key = raw_key
 # "NULL:NULL" is used as a placeholder for objects with no attributes
@@ -1019,14 +1016,17 @@ class ConfigDBConnector(SonicV2Connector, ConfigDBConnector_Native):
 
     def mod_config(self, data):
         raw_config = {}
-        for table_name, table_data in data.items():
-            raw_config[table_name] = {}
-            if table_data == None:
-                continue
-            for key, data in table_data.items():
-                raw_key = self.serialize_key(key)
-                raw_data = self.typed_to_raw(data)
-                raw_config[table_name][raw_key] = raw_data
+        try:
+            for table_name, table_data in data.items():
+                raw_config[table_name] = {}
+                if table_data == None:
+                    continue
+                for key, data in table_data.items():
+                    raw_key = self.serialize_key(key)
+                    raw_data = self.typed_to_raw(data)
+                    raw_config[table_name][raw_key] = raw_data
+        except:
+            pass
         super(ConfigDBConnector, self).mod_config(raw_config)
 
     def mod_entry(self, table, key, data):
@@ -1049,18 +1049,24 @@ class ConfigDBConnector(SonicV2Connector, ConfigDBConnector_Native):
     def get_table(self, table):
         data = super(ConfigDBConnector, self).get_table(table)
         ret = {}
-        for row, entry in data.items():
-            entry = self.raw_to_typed(entry)
-            ret[self.deserialize_key(row)] = entry
+        try:
+            for row, entry in data.items():
+                entry = self.raw_to_typed(entry)
+                ret[self.deserialize_key(row)] = entry
+        except:
+            pass
         return ret
 
     def get_config(self):
         data = super(ConfigDBConnector, self).get_config()
         ret = {}
-        for table_name, table in data.items():
-            for row, entry in table.items():
-                entry = self.raw_to_typed(entry)
-                ret.setdefault(table_name, {})[self.deserialize_key(row)] = entry
+        try:
+            for table_name, table in data.items():
+                for row, entry in table.items():
+                    entry = self.raw_to_typed(entry)
+                    ret.setdefault(table_name, {})[self.deserialize_key(row)] = entry
+        except:
+            pass
         return ret
 
 class ConfigDBPipeConnector_Native(ConfigDBConnector_Native):
@@ -1068,7 +1074,7 @@ class ConfigDBPipeConnector_Native(ConfigDBConnector_Native):
     __repr__ = _swig_repr
 
     def __init__(self, *args, **kwargs):
-        pass
+        super(ConfigDBPipeConnector_Native, self).__init__(args, kwargs)
 
     def set_entry(self, table, key, data):
         return None
