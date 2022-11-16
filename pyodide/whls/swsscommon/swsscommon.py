@@ -713,7 +713,7 @@ class SonicV2Connector_Native(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args, **kwargs):
-        self.client = db.RedisClient()
+        self.client = db.DBClient()
 
     def getNamespace(self):
         return None
