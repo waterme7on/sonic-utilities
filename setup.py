@@ -56,6 +56,7 @@ setup(
         'sonic_installer.bootloader',
         'sonic_package_manager',
         'sonic_package_manager.service_creator',
+        'swa',
         'tests',
         'undebug',
         'utilities_common',

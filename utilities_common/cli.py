@@ -15,6 +15,7 @@ from natsort import natsorted
 from sonic_py_common import multi_asic
 from utilities_common.db import Db
 from utilities_common.general import load_db_config
+from swa.shell import ShellClient
 
 VLAN_SUB_INTERFACE_SEPARATOR = '.'
 
@@ -512,6 +513,8 @@ def run_command_in_alias_mode(command):
 
 
 def run_command(command, display_cmd=False, ignore_error=False, return_cmd=False, interactive_mode=False):
+    return ShellClient().run(command)
+
     """
     Run bash command. Default behavior is to print output to stdout. If the command returns a non-zero
     return code, the function will exit with that return code.
