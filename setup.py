@@ -11,7 +11,7 @@ from setuptools import setup
 
 setup(
     name='sonic-utilities',
-    version='1.2',
+    version='1.7',
     description='Command-line utilities for SONiC',
     license='Apache 2.0',
     author='SONiC Team',
