@@ -7,8 +7,8 @@ import click
 import re
 import utilities_common.cli as clicommon
 from sonic_py_common import multi_asic
-from swsscommon.swsscommon import SonicV2Connector, ConfigDBConnector
-from swsscommon import swsscommon
+from swsscommon import SonicV2Connector, ConfigDBConnector
+import swsscommon
 from tabulate import tabulate
 from utilities_common import platform_sfputil_helper
 from utilities_common.general import get_optional_value_for_key_in_config_tbl 

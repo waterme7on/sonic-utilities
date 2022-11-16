@@ -1,6 +1,6 @@
 
 import click
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 import ipaddress
 
 CFG_PORTCHANNEL_PREFIX = "PortChannel"

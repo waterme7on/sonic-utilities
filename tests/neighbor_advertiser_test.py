@@ -4,7 +4,7 @@ import sys
 from unittest import mock
 
 import pytest
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 from utilities_common.general import load_module_from_source
 
 test_path = os.path.dirname(os.path.abspath(__file__))

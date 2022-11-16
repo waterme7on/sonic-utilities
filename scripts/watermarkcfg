@@ -8,7 +8,7 @@
 
 import argparse
 import sys
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 
 
 class Watermarkcfg(object):

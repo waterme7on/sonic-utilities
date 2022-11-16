@@ -4,7 +4,7 @@ import click
 import json
 import subprocess
 from sonic_py_common import device_info
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 
 def abort_if_false(ctx, param, value):
     if not value:

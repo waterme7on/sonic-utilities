@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 from deepdiff import DeepDiff
 from importlib import reload
 
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from ..mock_tables import dbconnector
 
 test_path = os.path.join(os.path.dirname(__file__), "../")

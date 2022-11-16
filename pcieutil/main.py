@@ -13,7 +13,7 @@ try:
 
     import click
     from sonic_py_common import device_info, logger
-    from swsscommon.swsscommon import SonicV2Connector
+    from swsscommon import SonicV2Connector
     from tabulate import tabulate
     import utilities_common.cli as clicommon
 except ImportError as e:

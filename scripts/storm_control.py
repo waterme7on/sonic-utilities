@@ -24,7 +24,7 @@ except KeyError:
 
 from natsort import natsorted
 from tabulate import tabulate
-from swsscommon.swsscommon import SonicV2Connector, ConfigDBConnector
+from swsscommon import SonicV2Connector, ConfigDBConnector
 from utilities_common.general import load_db_config
 
 STORM_TABLE_NAME = "PORT_STORM_CONTROL"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 import json
 import socket
 import struct

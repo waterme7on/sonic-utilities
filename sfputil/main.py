@@ -17,7 +17,7 @@ import click
 import sonic_platform
 import sonic_platform_base.sonic_sfp.sfputilhelper
 from sonic_platform_base.sfp_base import SfpBase
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from natsort import natsorted
 from sonic_py_common import device_info, logger, multi_asic
 from tabulate import tabulate

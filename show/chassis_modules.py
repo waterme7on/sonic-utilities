@@ -1,7 +1,7 @@
 import click
 from natsort import natsorted
 from tabulate import tabulate
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 
 import utilities_common.cli as clicommon
 from sonic_py_common import multi_asic

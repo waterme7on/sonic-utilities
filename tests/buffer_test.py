@@ -5,7 +5,7 @@ import mock
 from importlib import reload
 from click.testing import CliRunner
 from unittest import TestCase
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 
 from .mock_tables import dbconnector
 

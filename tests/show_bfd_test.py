@@ -1,7 +1,7 @@
 import os
 import sys
 from click.testing import CliRunner
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from utilities_common.db import Db
 
 import show.main as show

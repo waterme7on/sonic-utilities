@@ -3,7 +3,7 @@
 import sys
 import os
 import syslog
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from utilities_common.auto_techsupport_helper import *
 
 # Exit codes

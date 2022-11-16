@@ -46,7 +46,7 @@ except KeyError: # pragma: no cover
 
 import ipaddress
 
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from tabulate import tabulate
 
 """

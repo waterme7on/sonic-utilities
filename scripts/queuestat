@@ -28,7 +28,7 @@ try:
 except KeyError:
     pass
 
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from utilities_common.cli import UserCache
 
 QueueStats = namedtuple("QueueStats", "queueindex, queuetype, totalpacket, totalbytes, droppacket, dropbytes")

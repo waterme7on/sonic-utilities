@@ -5,7 +5,7 @@ from dump.helper import create_template_dict, sort_lists, populate_mock
 from dump.plugins.acl_table import Acl_Table
 from dump.plugins.acl_rule import Acl_Rule
 from dump.match_infra import MatchEngine, ConnectionPool
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from utilities_common.constants import DEFAULT_NAMESPACE
 
 # Location for dedicated db's used for UT

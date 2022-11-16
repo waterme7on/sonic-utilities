@@ -9,7 +9,7 @@ from urllib.request import urlopen, urlretrieve
 
 import click
 from sonic_py_common import logger
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 
 from .bootloader import get_bootloader
 from .common import (

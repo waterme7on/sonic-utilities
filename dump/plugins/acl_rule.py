@@ -1,6 +1,6 @@
 from dump.helper import create_template_dict
 from dump.match_infra import MatchRequest
-from swsscommon.swsscommon import SonicDBConfig
+from swsscommon import SonicDBConfig
 
 from dump.match_helper import fetch_acl_counter_oid
 from .executor import Executor

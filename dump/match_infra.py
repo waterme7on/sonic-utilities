@@ -3,7 +3,7 @@ import fnmatch
 import copy
 from abc import ABC, abstractmethod
 from dump.helper import verbose_print
-from swsscommon.swsscommon import SonicV2Connector, SonicDBConfig
+from swsscommon import SonicV2Connector, SonicDBConfig
 from sonic_py_common import multi_asic
 from utilities_common.constants import DEFAULT_NAMESPACE
 

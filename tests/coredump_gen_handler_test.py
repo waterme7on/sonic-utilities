@@ -5,7 +5,7 @@ import pyfakefs
 import unittest
 import signal
 from pyfakefs.fake_filesystem_unittest import Patcher
-from swsscommon import swsscommon
+import swsscommon
 import utilities_common.auto_techsupport_helper as ts_helper
 from utilities_common.general import load_module_from_source
 from utilities_common.db import Db

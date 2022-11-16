@@ -42,7 +42,7 @@ try:
 except KeyError:
     pass
 
-from swsscommon.swsscommon import SonicV2Connector, ConfigDBConnector
+from swsscommon import SonicV2Connector, ConfigDBConnector
 
 BUFFER_POOL_TABLE_NAME = "BUFFER_POOL"
 BUFFER_PROFILE_TABLE_NAME = "BUFFER_PROFILE"

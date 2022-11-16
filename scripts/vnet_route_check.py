@@ -4,7 +4,7 @@ import os
 import sys
 import json
 import syslog
-from swsscommon import swsscommon
+import swsscommon
 
 ''' vnet_route_check.py: tool that verifies VNET routes consistancy between SONiC and vendor SDK DBs.
 

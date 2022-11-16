@@ -3,7 +3,7 @@ from sonic_py_common.multi_asic import DEFAULT_NAMESPACE
 from dump.match_infra import MatchRequest
 from dump.helper import create_template_dict, handle_error
 from dump.match_helper import fetch_port_oid, fetch_vlan_oid, fetch_lag_oid
-from swsscommon.swsscommon import SonicDBConfig
+from swsscommon import SonicDBConfig
 from .executor import Executor
 
 

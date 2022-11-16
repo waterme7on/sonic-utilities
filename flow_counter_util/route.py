@@ -1,6 +1,6 @@
 import os
 import sys
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 
 try:
     if os.environ["UTILITIES_UNIT_TESTING"] == "1" or os.environ["UTILITIES_UNIT_TESTING"] == "2":

@@ -12,7 +12,7 @@ import tabulate
 import natsort
 import json
 import utilities_common.cli as clicommon
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 
 COUNTER_PACKETS_ATTR = "SAI_ACL_COUNTER_ATTR_PACKETS"
 COUNTER_BYTES_ATTR = "SAI_ACL_COUNTER_ATTR_BYTES"

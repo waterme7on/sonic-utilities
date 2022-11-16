@@ -9,7 +9,7 @@ from natsort import natsorted
 from tabulate import tabulate
 from sonic_py_common import multi_asic
 from sonic_py_common import device_info
-from swsscommon.swsscommon import ConfigDBConnector, SonicV2Connector
+from swsscommon import ConfigDBConnector, SonicV2Connector
 from portconfig import get_child_ports
 import sonic_platform_base.sonic_sfp.sfputilhelper
 

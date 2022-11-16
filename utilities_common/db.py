@@ -1,5 +1,5 @@
 from sonic_py_common import multi_asic, device_info
-from swsscommon.swsscommon import ConfigDBConnector, ConfigDBPipeConnector, SonicV2Connector
+from swsscommon import ConfigDBConnector, ConfigDBPipeConnector, SonicV2Connector
 from utilities_common import constants
 from utilities_common.multi_asic import multi_asic_ns_choices
 

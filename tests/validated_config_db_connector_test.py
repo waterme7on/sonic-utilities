@@ -11,7 +11,7 @@ from unittest import TestCase
 from mock import patch
 from generic_config_updater.gu_common import EmptyTableError
 from validated_config_db_connector import ValidatedConfigDBConnector
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 
 from utilities_common.db import Db
 

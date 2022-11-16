@@ -9,7 +9,7 @@ from utilities_common import constants
 from natsort import natsorted
 from tabulate import tabulate
 from sonic_py_common import multi_asic
-from swsscommon.swsscommon import APP_FABRIC_PORT_TABLE_NAME, COUNTERS_TABLE, COUNTERS_FABRIC_PORT_NAME_MAP, COUNTERS_FABRIC_QUEUE_NAME_MAP
+from swsscommon import APP_FABRIC_PORT_TABLE_NAME, COUNTERS_TABLE, COUNTERS_FABRIC_PORT_NAME_MAP, COUNTERS_FABRIC_QUEUE_NAME_MAP
 import utilities_common.multi_asic as multi_asic_util
 
 # mock the redis for unit test purposes #

@@ -3,7 +3,7 @@
 import sys
 
 import sonic_py_common.logger
-from swsscommon.swsscommon import ConfigDBConnector, SonicV2Connector
+from swsscommon import ConfigDBConnector, SonicV2Connector
 from utilities_common.auto_techsupport_helper import STATE_DB
 
 # Exit codes

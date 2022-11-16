@@ -4,7 +4,7 @@ import sys
 
 import click
 from tabulate import tabulate
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 import utilities_common.cli as clicommon
 
 

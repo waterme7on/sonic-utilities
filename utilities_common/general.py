@@ -3,7 +3,7 @@ import importlib.util
 import sys
 
 from sonic_py_common.multi_asic import is_multi_asic
-from swsscommon import swsscommon
+import swsscommon
 
 def load_module_from_source(module_name, file_path):
     """

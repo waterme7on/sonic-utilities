@@ -1,7 +1,7 @@
 import click
 import json
 from flow_counter_util.route import exit_if_route_flow_counter_not_support
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 from tabulate import tabulate
 
 BUFFER_POOL_WATERMARK = "BUFFER_POOL_WATERMARK"

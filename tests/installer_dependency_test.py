@@ -19,7 +19,7 @@ class MockSonicDBConfig:
     def isGlobalInit():
         return False
 
-@mock.patch("swsscommon.swsscommon.SonicDBConfig", MockSonicDBConfig)
+@mock.patch("swsscommon.SonicDBConfig", MockSonicDBConfig)
 def test_sonic_installer_not_depends_on_database_container():
     runner = CliRunner()
     result = runner.invoke(

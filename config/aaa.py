@@ -1,7 +1,7 @@
 import click
 import ipaddress
 import re
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 from .validated_config_db_connector import ValidatedConfigDBConnector
 from jsonpatch import JsonPatchConflict
 import utilities_common.cli as clicommon

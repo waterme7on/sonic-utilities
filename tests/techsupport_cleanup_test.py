@@ -3,7 +3,7 @@ import sys
 import pyfakefs
 import unittest
 from pyfakefs.fake_filesystem_unittest import Patcher
-from swsscommon import swsscommon
+import swsscommon
 from utilities_common.general import load_module_from_source
 from utilities_common.db import Db
 from .mock_tables import dbconnector

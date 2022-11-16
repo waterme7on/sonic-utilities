@@ -31,7 +31,7 @@ import click
 import ipaddress
 import tabulate
 
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 
 
 CONFIG_DB_ACL_TABLE_TABLE = "ACL_TABLE"

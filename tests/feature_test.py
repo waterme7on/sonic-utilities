@@ -7,7 +7,7 @@ from contextlib import ExitStack
 from click.testing import CliRunner
 
 from utilities_common.db import Db
-from swsscommon import swsscommon
+import swsscommon
 
 show_feature_status_output="""\
 Feature     State           AutoRestart     SetOwner
@@ -293,11 +293,11 @@ class TestFeature(object):
         db = Db()
         runner = CliRunner()
         with ExitStack() as es:
-            es.enter_context(mock.patch("swsscommon.swsscommon.DBConnector"))
+            es.enter_context(mock.patch("swsscommon.DBConnector"))
             mock_select = mock.Mock()
-            es.enter_context(mock.patch("swsscommon.swsscommon.Select", return_value=mock_select))
+            es.enter_context(mock.patch("swsscommon.Select", return_value=mock_select))
             mock_tbl = mock.Mock()
-            es.enter_context(mock.patch("swsscommon.swsscommon.SubscriberStateTable", return_value=mock_tbl))
+            es.enter_context(mock.patch("swsscommon.SubscriberStateTable", return_value=mock_tbl))
             mock_select.select = mock.Mock(return_value=(swsscommon.Select.OBJECT, mock_tbl))
             mock_tbl.pop = mock.Mock(return_value=("bgp", "", [("state", actual_state)]));
             result = runner.invoke(config.config.commands["feature"].commands["state"], ["bgp", "disabled", "--block"], obj=db)

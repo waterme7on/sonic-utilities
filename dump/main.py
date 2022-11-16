@@ -7,7 +7,7 @@ from tabulate import tabulate
 from sonic_py_common import multi_asic
 from utilities_common.constants import DEFAULT_NAMESPACE
 from dump.match_infra import RedisSource, JsonSource, MatchEngine, CONN
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 from dump import plugins
 
 # Autocompletion Helper

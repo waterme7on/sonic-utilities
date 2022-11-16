@@ -4,7 +4,7 @@ import contextlib
 import json
 import os
 
-from swsscommon import swsscommon
+import swsscommon
 
 from config.config_mgmt import sonic_cfggen
 

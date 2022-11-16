@@ -8,7 +8,7 @@ from dump.helper import create_template_dict, sort_lists, populate_mock
 from dump.plugins.vlan import Vlan
 from dump.plugins.vlan_member import Vlan_Member
 from dump.match_infra import MatchEngine, ConnectionPool
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from utilities_common.constants import DEFAULT_NAMESPACE
 
 module_tests_path = os.path.dirname(__file__)

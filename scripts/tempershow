@@ -4,7 +4,7 @@
     Script to show fan status.
 """
 from tabulate import tabulate
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from natsort import natsorted
 
 

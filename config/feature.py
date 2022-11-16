@@ -1,7 +1,7 @@
 import sys
 
 import click
-from swsscommon import swsscommon
+import swsscommon
 from utilities_common.cli import AbbreviationGroup, pass_db
 
 SELECT_TIMEOUT = 1000  # ms

@@ -57,7 +57,7 @@ except KeyError: # pragma: no cover
     pass
 
 from sonic_py_common import port_util
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from tabulate import tabulate
 
 class FdbShow(object):

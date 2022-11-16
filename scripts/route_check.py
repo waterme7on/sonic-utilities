@@ -46,7 +46,7 @@ import time
 import signal
 import traceback
 
-from swsscommon import swsscommon
+import swsscommon
 from utilities_common import chassis
 
 APPL_DB_NAME = 'APPL_DB'

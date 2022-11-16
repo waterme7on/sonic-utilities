@@ -34,7 +34,7 @@ try:
 except KeyError:
     pass
 
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 
 
 headerBufferPool = ['Pool', 'Bytes']

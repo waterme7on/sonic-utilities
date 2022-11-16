@@ -1,7 +1,7 @@
 import click
 import utilities_common.cli as clicommon
 from natsort import natsorted
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from tabulate import tabulate
 
 

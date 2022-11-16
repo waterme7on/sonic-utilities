@@ -12,7 +12,7 @@ import socket
 import sys
 import time
 
-from swsscommon.swsscommon import ConfigDBConnector
+from swsscommon import ConfigDBConnector
 from scapy.all import *
 
 

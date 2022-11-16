@@ -18,7 +18,7 @@ import sys
 import sonic_platform
 from sonic_platform_base.sonic_eeprom.eeprom_tlvinfo import TlvInfoDecoder
 from sonic_py_common import device_info
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from tabulate import tabulate
 
 

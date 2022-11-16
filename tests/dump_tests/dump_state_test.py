@@ -14,7 +14,7 @@ from dump.helper import populate_mock
 from deepdiff import DeepDiff
 from utilities_common.constants import DEFAULT_NAMESPACE
 from pyfakefs.fake_filesystem_unittest import Patcher
-from swsscommon.swsscommon import SonicV2Connector
+from swsscommon import SonicV2Connector
 from ..mock_tables import dbconnector
 
 def compare_json_output(exp_json, rec, exclude_paths=None):
