@@ -231,16 +231,17 @@ def is_gearbox_configured():
     """
     Checks whether Gearbox is configured or not
     """
-    app_db = SonicV2Connector()
-    app_db.connect(app_db.APPL_DB)
-
-    keys = app_db.keys(app_db.APPL_DB, '*')
-
-    # If any _GEARBOX_TABLE:phy:* records present in APPL_DB, then the gearbox is configured
-    if any(re.match(GEARBOX_TABLE_PHY_PATTERN, key) for key in keys):
-        return True
-    else:
-        return False
+    return True
+    # app_db = SonicV2Connector()
+    # app_db.connect(app_db.APPL_DB)
+    #
+    # keys = app_db.keys(app_db.APPL_DB, '*')
+    #
+    # # If any _GEARBOX_TABLE:phy:* records present in APPL_DB, then the gearbox is configured
+    # if any(re.match(GEARBOX_TABLE_PHY_PATTERN, key) for key in keys):
+    #     return True
+    # else:
+    #     return False
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help', '-?'])
 
