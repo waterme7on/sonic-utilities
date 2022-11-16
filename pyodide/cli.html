@@ -189,6 +189,23 @@
                 term.write(e.key);
             }
         });
+
+        // https://github.com/xtermjs/xterm.js/issues/2478#issuecomment-1002371588
+        term.attachCustomKeyEventHandler((arg) => {
+            if (arg.ctrlKey && arg.code === "KeyC" && arg.type === "keydown") {
+                const selection = term.getSelection();
+                if (selection) {
+                    navigator.clipboard.writeText(selection)
+                    return false;
+                }
+            } else if (arg.ctrlKey && arg.code === "KeyV" && arg.type === "keydown") {
+                navigator.clipboard.readText().then(text => {
+                    buf += text;
+                    term.write(text);
+                })
+            }
+            return true;
+        });
     }
 
     function prompt(term) {
