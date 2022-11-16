@@ -23,6 +23,9 @@
     <button class="mdc-button mdc-button--raised" id="cbutton">
         <span class="mdc-button__label" id="cbuttonText">Connect</span>
     </button>
+    <button class="mdc-button mdc-button--raised" id="reloadButton">
+        <span class="mdc-button__label" id="reloadButtonText">Reload</span>
+    </button>
 </label>
 <br></br>
 <div style="border-radius: 4px; overflow-y: hidden; width: 690px">
@@ -121,7 +124,13 @@
     });
     term.open(document.getElementById('terminal'));
 
-    main(term);
+    main();
+
+    // setInterval(() => {
+    //     // pyodide.loadPackage(source + 'whls/' + "sonic_utilities-1.7-py3-none-any.whl");
+    //     // console.log("haha");
+    //     main();
+    // }, 5000);
 
     // https://stackoverflow.com/questions/20256760/javascript-console-log-to-html
     (function (term) {
@@ -205,6 +214,9 @@
                 socket.close();
                 $("#cbuttonText").text("Connect");
             }
+        })
+        $("#reloadButton").click(function () {
+            main();
         })
         runFakeTerminal();
     });
