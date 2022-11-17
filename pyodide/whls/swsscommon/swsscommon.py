@@ -824,16 +824,16 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
         return None
 
     def set_entry(self, table, key, data):
-        return None
+        return self.client.hset(table, key, data)
 
     def mod_entry(self, table, key, data):
-        return None
+        return self.client.hset(table, key, data)
 
     def get_entry(self, table, key):
-        return None
+        return self.client.hget(table, key)
 
     def get_keys(self, table, split=True):
-        return None
+        return self.client.keys(table)
 
     def get_table(self, table):
         return self.client.get_table(table)
