@@ -743,7 +743,7 @@ class SonicV2Connector_Native(object):
         return None
 
     def keys(self, *args, **kwargs):
-        return None
+        return self.client.keys(*args)
 
     def scan(self, *args, **kwargs):
         return None

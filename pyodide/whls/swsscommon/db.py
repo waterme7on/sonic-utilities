@@ -54,7 +54,7 @@ class DBClient:
                 res[key.split("|")[1]] = map
         except:
             pass
-        return json.dumps(res)
+        return res
 
     def delete_table(self, table):
         #
