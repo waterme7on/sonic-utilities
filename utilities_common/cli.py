@@ -513,7 +513,10 @@ def run_command_in_alias_mode(command):
 
 
 def run_command(command, display_cmd=False, ignore_error=False, return_cmd=False, interactive_mode=False):
-    return ShellClient().run(command)
+    res = ShellClient().run(command)
+    if return_cmd == False:
+        print(res)
+    return res
 
     """
     Run bash command. Default behavior is to print output to stdout. If the command returns a non-zero
