@@ -21,8 +21,8 @@ MGMT_VRF_GLOBAL = "vrf_global"
 MGMT_VRF_GLOBAL_ENABLED = "mgmtVrfEnabled"
 
 
-log = logger.Logger()
-log.set_min_log_priority_info()
+# log = logger.Logger()
+# log.set_min_log_priority_info()
 
 #
 # Syslog helpers ------------------------------------------------------------------------------------------------------

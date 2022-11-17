@@ -1,4 +1,4 @@
-from sonic_py_common import logger
+from config import logger
 
 SYSLOG_IDENTIFIER = "config"
 

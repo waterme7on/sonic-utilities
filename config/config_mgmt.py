@@ -6,14 +6,15 @@ Port Breakout.
 import os
 import re
 import shutil
-import syslog
+# import syslog
+import config.dummy_syslog as syslog
 import tempfile
-import yang as ly
+# import yang as ly
 from json import load
 from sys import flags
 from time import sleep as tsleep
 
-import sonic_yang
+# import sonic_yang
 from jsondiff import diff
 from sonic_py_common import port_util
 from swsscommon import SonicV2Connector, ConfigDBConnector

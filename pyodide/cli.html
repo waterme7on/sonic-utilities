@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="http://localhost:8000/css/material-components-web.min.css">
     <script src="http://localhost:8000/js/jquery.min.js"></script>
     <script src="http://localhost:8000/js/material-components-web.min.js"></script>
-    <script src="http://localhost:8000/js/pyodide.js"></script>
+<!--    <script src="http://localhost:8000/js/pyodide.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
 </head>
 
 <body>
@@ -43,6 +44,8 @@
     async function main(){
         pyodide = await loadPyodide();
         await pyodide.loadPackage("micropip");
+        await pyodide.loadPackage('lxml')
+        await pyodide.loadPackage('jinja2')
         const micropip = pyodide.pyimport("micropip");
 
         source = "http://localhost:8000/"
@@ -258,28 +261,33 @@
     function getResponse(data) {
         // const res = "\nhaha " + data;
 
-        // pyodide.runPython(`
-        //     import os
-        //     os.listdir('.')
-        //     from show.main import cli
-        //     import sys
-        //     sys.argv = '${data}'.split()
-        //     # sys.argv = ['show', 'aaa']
-        //     try:
-        //         cli()
-        //     except:
-        //         pass
-        //     # res = "This is the result for ${data}!"
-        // `);
-
         pyodide.runPython(`
-            import re
             import sys
-            from config.main import config
+            import click
+            from show.main import cli
             sys.argv = '${data}'.split()
-            sys.argv[0] = re.sub(r'(-script\\.pyw|\\.exe)?$', '', sys.argv[0])
-            sys.exit(config())
+            try:
+                cli()
+            except click.exceptions.Exit:
+                pass
+            except SystemExit:
+                pass
         `);
+
+        // pyodide.runPython(`
+        //     import re
+        //     import sys
+        //     import click
+        //     from config.main import config
+        //     sys.argv = '${data}'.split()
+        //     sys.argv[0] = re.sub(r'(-script\\.pyw|\\.exe)?$', '', sys.argv[0])
+        //     try:
+        //         config()
+        //     except click.exceptions.Exit:
+        //         pass
+        //     except SystemExit:
+        //         pass
+        // `);
 
         term.write('\n');
 

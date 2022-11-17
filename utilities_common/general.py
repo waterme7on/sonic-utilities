@@ -1,11 +1,14 @@
 import importlib.machinery
 import importlib.util
 import sys
+from swa.file import FileClient
 
 from sonic_py_common.multi_asic import is_multi_asic
 import swsscommon
 
 def load_module_from_source(module_name, file_path):
+    FileClient().map_to_local(file_path)
+
     """
     This function will load the Python source file specified by <file_path>
     as a module named <module_name> and return an instance of the module
@@ -13,7 +16,10 @@ def load_module_from_source(module_name, file_path):
     loader = importlib.machinery.SourceFileLoader(module_name, file_path)
     spec = importlib.util.spec_from_loader(loader.name, loader)
     module = importlib.util.module_from_spec(spec)
-    loader.exec_module(module)
+    try:
+        loader.exec_module(module)
+    except:
+        pass
 
     sys.modules[module_name] = module
 
