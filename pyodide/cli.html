@@ -265,29 +265,19 @@
             import sys
             import click
             from show.main import cli
-            sys.argv = '${data}'.split()
+            from config.main import config
+            data = '${data}'
+            sys.argv = data.split()
             try:
-                cli()
+                if data.startswith("show"):
+                    cli()
+                else:
+                    config()
             except click.exceptions.Exit:
                 pass
             except SystemExit:
                 pass
         `);
-
-        // pyodide.runPython(`
-        //     import re
-        //     import sys
-        //     import click
-        //     from config.main import config
-        //     sys.argv = '${data}'.split()
-        //     sys.argv[0] = re.sub(r'(-script\\.pyw|\\.exe)?$', '', sys.argv[0])
-        //     try:
-        //         config()
-        //     except click.exceptions.Exit:
-        //         pass
-        //     except SystemExit:
-        //         pass
-        // `);
 
         term.write('\n');
 
