@@ -254,19 +254,30 @@
 
     function getResponse(data) {
         // const res = "\nhaha " + data;
+
+        // pyodide.runPython(`
+        //     import os
+        //     os.listdir('.')
+        //     from show.main import cli
+        //     import sys
+        //     sys.argv = '${data}'.split()
+        //     # sys.argv = ['show', 'aaa']
+        //     try:
+        //         cli()
+        //     except:
+        //         pass
+        //     # res = "This is the result for ${data}!"
+        // `);
+
         pyodide.runPython(`
-            import os
-            os.listdir('.')
-            from show.main import cli
+            import re
             import sys
+            from config.main import config
             sys.argv = '${data}'.split()
-            # sys.argv = ['show', 'aaa']
-            try:
-                cli()
-            except:
-                pass
-            # res = "This is the result for ${data}!"
+            sys.argv[0] = re.sub(r'(-script\\.pyw|\\.exe)?$', '', sys.argv[0])
+            sys.exit(config())
         `);
+
         term.write('\n');
 
         // let res = pyodide.globals.get("res");
