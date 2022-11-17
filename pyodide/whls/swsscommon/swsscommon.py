@@ -743,7 +743,7 @@ class SonicV2Connector_Native(object):
         return None
 
     def keys(self, *args, **kwargs):
-        return self.client.keys(*args)
+        return self.client.raw_to_list(self.client.keys(*args))
 
     def scan(self, *args, **kwargs):
         return None
@@ -755,7 +755,7 @@ class SonicV2Connector_Native(object):
         return None
 
     def get_all(self, db_name, _hash, blocking=False):
-        return None
+        return {}
 
     def hmset(self, db_name, key, values):
         return None

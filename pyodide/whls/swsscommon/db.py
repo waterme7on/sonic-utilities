@@ -1,5 +1,6 @@
 from base import send_redis_command, get_random_id
 import json
+import re
 
 # \sonic-buildimage\src\sonic-swss-common\common\database_config.json
 db_dict = {
@@ -68,7 +69,8 @@ class DBClient:
         status, msg, data = send_redis_command(self.cid, "flushdb")
         return data
 
-
+    def raw_to_list(self, data):
+        return re.sub("[\[\]\"\']", "", data).split(",")
     '''key related commands'''
     def keys(self, *args):
         db = args[0]

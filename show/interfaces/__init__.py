@@ -361,7 +361,7 @@ def mpls(ctx, interfacename, namespace, display):
             interfacename = try_convert_interfacename_from_alias(ctx, interfacename)
 
         # Fetching data from appl_db for intfs
-        keys = appl_db.keys(appl_db.APPL_DB, "INTF_TABLE:*")
+        keys = appl_db.keys('APPL_DB', "INTF_TABLE:*")
         for key in keys if keys else []:
             tokens = key.split(":")
             ifname = tokens[1]
@@ -376,17 +376,19 @@ def mpls(ctx, interfacename, namespace, display):
                 intf_found = True
 
             if (display != "all"):
-                if ("Loopback" in ifname):
-                    continue
+                try:
+                    if ("Loopback" in ifname):
+                        continue
 
-                if ifname.startswith("Ethernet") and multi_asic.is_port_internal(ifname, ns):
-                    continue
+                    if ifname.startswith("Ethernet") and multi_asic.is_port_internal(ifname, ns):
+                        continue
 
-                if ifname.startswith("PortChannel") and multi_asic.is_port_channel_internal(ifname, ns):
-                    continue
+                    if ifname.startswith("PortChannel") and multi_asic.is_port_channel_internal(ifname, ns):
+                        continue
+                except:
+                    pass
 
-
-            mpls_intf = appl_db.get_all(appl_db.APPL_DB, key)
+            mpls_intf = appl_db.get_all('APPL_DB', key)
 
             if 'mpls' not in mpls_intf or mpls_intf['mpls'] == 'disable':
                 intfs_data.update({ifname: 'disable'})
