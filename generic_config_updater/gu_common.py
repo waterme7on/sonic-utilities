@@ -1,10 +1,10 @@
 import json
 import jsonpatch
 from jsonpointer import JsonPointer
-import sonic_yang
-import sonic_yang_ext
+# import sonic_yang
+# import sonic_yang_ext
 import subprocess
-import yang as ly
+# import yang as ly
 import copy
 import re
 from sonic_py_common import logger
@@ -110,8 +110,8 @@ class ConfigWrapper:
 
             sy.validate_data_tree()
             return True, None
-        except sonic_yang.SonicYangException as ex:
-            return False, ex
+        except:
+            return False, None
 
     def validate_config_db_config(self, config_db_as_json):
         sy = self.create_sonic_yang_with_loaded_models()
@@ -131,8 +131,8 @@ class ConfigWrapper:
                 success, error = supplemental_yang_validator(config_db_as_json)
                 if not success:
                     return success, error
-        except sonic_yang.SonicYangException as ex:
-            return False, ex
+        except:
+            return False, None
 
         return True, None
 
@@ -226,9 +226,9 @@ class ConfigWrapper:
         # sonic_yang_with_loaded_models will only be initialized once the first time this method is called
         if self.sonic_yang_with_loaded_models is None:
             sonic_yang_print_log_enabled = genericUpdaterLogging.get_verbose()
-            loaded_models_sy = sonic_yang.SonicYang(self.yang_dir, print_log_enabled=sonic_yang_print_log_enabled)
-            loaded_models_sy.loadYangModel() # This call takes a long time (100s of ms) because it reads files from disk
-            self.sonic_yang_with_loaded_models = loaded_models_sy
+            # loaded_models_sy = sonic_yang.SonicYang(self.yang_dir, print_log_enabled=sonic_yang_print_log_enabled)
+            # loaded_models_sy.loadYangModel() # This call takes a long time (100s of ms) because it reads files from disk
+            self.sonic_yang_with_loaded_models = None
 
         return copy.copy(self.sonic_yang_with_loaded_models)
 
@@ -524,7 +524,8 @@ class PathAddressing:
 
     def _is_leaf_node(self, node):
         schema = node.schema()
-        return ly.LYS_LEAF == schema.nodetype()
+        return True
+        # return ly.LYS_LEAF == schema.nodetype()
 
     def convert_path_to_xpath(self, path, config, sy):
         """
@@ -698,12 +699,16 @@ class PathAddressing:
 
     def _get_type_1_list_model(self, model):
         list_name = model['@name']
-        if list_name not in sonic_yang_ext.Type_1_list_maps_model:
-            return None
-
+        # if list_name not in sonic_yang_ext.Type_1_list_maps_model:
+            # return None
         # Type 1 list is expected to have a single inner list model.
         # No need to check if it is a dictionary of list models.
-        return model.get('list')
+        ret = None
+        try:
+            ret = model.get('list')
+        except:
+            pass
+        return ret
 
     def convert_xpath_to_path(self, xpath, config, sy):
         """
@@ -978,9 +983,9 @@ class PathAddressing:
 
         return None
 
-class TitledLogger(logger.Logger):
+class TitledLogger:
     def __init__(self, syslog_identifier, title, verbose, print_all_to_console):
-        super().__init__(syslog_identifier)
+        # super().__init__(syslog_identifier)
         self._title = title
         if verbose:
             self.set_min_log_priority_debug()
