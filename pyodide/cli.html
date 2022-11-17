@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="http://localhost:8000/css/material-components-web.min.css">
     <script src="http://localhost:8000/js/jquery.min.js"></script>
     <script src="http://localhost:8000/js/material-components-web.min.js"></script>
-<!--    <script src="http://localhost:8000/js/pyodide.js"></script>-->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>
+    <script src="http://localhost:8000/js/pyodide.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js"></script>-->
 </head>
 
 <body>
@@ -43,10 +43,6 @@
     let pyodide;
     async function main(){
         pyodide = await loadPyodide();
-        await pyodide.loadPackage("micropip");
-        await pyodide.loadPackage('lxml')
-        await pyodide.loadPackage('jinja2')
-        const micropip = pyodide.pyimport("micropip");
 
         source = "http://localhost:8000/"
         let whl_dependencies = [
@@ -65,6 +61,16 @@
           'tabulate-0.9.0-py3-none-any.whl',
           'jsonpointer-2.3-py2.py3-none-any.whl',
           'jsondiff-2.0.0-py3-none-any.whl',
+          'PyYAML-6.0-cp310-cp310-emscripten_3_1_14_wasm32.whl',
+            'MarkupSafe-2.1.1-cp310-cp310-emscripten_3_1_14_wasm32.whl',
+            'Jinja2-3.1.2-py3-none-any.whl',
+            'six-1.16.0-py2.py3-none-any.whl',
+            'webencodings-0.5.1-py2.py3-none-any.whl',
+            'html5lib-1.1-py2.py3-none-any.whl',
+            'cssselect-1.1.0-py2.py3-none-any.whl',
+            'soupsieve-2.3.2.post1-py3-none-any.whl',
+            'beautifulsoup4-4.11.1-py3-none-any.whl',
+            'lxml-4.9.0-cp310-cp310-emscripten_3_1_14_wasm32.whl',
         ]
         for (let index = 0; index < whl_dependencies.length; index++) {
           await pyodide.loadPackage(source + 'whls/' + whl_dependencies[index])
@@ -72,7 +78,6 @@
         for (let index = 0; index < pypi_dependencies.length; index++) {
           await pyodide.loadPackage(source + 'pypi/' + pypi_dependencies[index])
         }
-        await pyodide.loadPackage('pyyaml')
 
         // let lib_dependencies = [
         //   '_swsscommon.so.0.0.0',
