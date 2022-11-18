@@ -830,7 +830,8 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
         return self.client.hset(table, key, data)
 
     def get_entry(self, table, key):
-        return self.client.hget(table, key)
+        self.client.connect('CONFIG_DB')
+        return self.client.hgetall(table + "|" + key)
 
     def get_keys(self, table, split=True):
         return self.client.keys(table)

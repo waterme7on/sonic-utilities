@@ -79,28 +79,6 @@
           await pyodide.loadPackage(source + 'pypi/' + pypi_dependencies[index])
         }
 
-        // let lib_dependencies = [
-        //   '_swsscommon.so.0.0.0',
-        //   '_swsscommon.so.0',
-        //   '_swsscommon.so',
-        //   '_swsscommon.a',
-        //   '_swsscommon.la',
-        // ]
-        // for (let index = 0; index < lib_dependencies.length; index++) {
-        //   // await pyodide.loadPackage(source + 'libs/' + lib_dependencies[index])
-        // }
-        // await pyodide.runPython(await (await fetch(source + 'whls/' + 'portconfig.py')).text());
-        // await pyodide.loadPackage('fcntl')
-        // console.log(pyodide.runPython(`
-        //     import os
-        //     os.listdir('.')
-        //     from show.main import cli
-        //     import sys
-        //     sys.argv = ['show', 'aaa']
-        //     cli()
-        // `));
-        // pyodide.runPython("print(1 + 2)");
-
         term.write('\r\n$ ');
     }
 

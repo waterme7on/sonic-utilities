@@ -50,9 +50,8 @@ class DBClient:
         try:
             keys_arr = json.loads(keys_str)
             for key in keys_arr:
-                map_str = self.hgetall(key)
-                map = json.loads(map_str)
-                res[key.split("|")[1]] = map
+                data = self.hgetall(key)
+                res[key.split("|")[1]] = data
         except:
             pass
         return res
@@ -96,10 +95,13 @@ class DBClient:
 
 
     '''hash related commands'''
-    def hset(self, key, field, value):
-        # https://redis.io/commands/hset/
-        status, msg, data = send_redis_command(self.cid, "hset", key, field, value)
-        return data
+    def hset(self, table, key, data):
+        # https://redis.io/commands/hset/\
+        ret_str = ""
+        for k, v in data.items():
+            status, msg, data = send_redis_command(self.cid, "hset", table+"|"+key, k, v)
+            ret_str += data
+        return ret_str
 
     def hmset(self, multiHash):
         # https://redis.io/commands/hmset/
@@ -115,7 +117,7 @@ class DBClient:
     def hgetall(self, key):
         # https://redis.io/commands/hgetall/
         status, msg, data = send_redis_command(self.cid, "hgetall", key)
-        return data
+        return json.loads(data)
 
     def hexists(self, key, field):
         # https://redis.io/commands/hexists/
