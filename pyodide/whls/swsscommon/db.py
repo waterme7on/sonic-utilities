@@ -95,10 +95,13 @@ class DBClient:
 
 
     '''hash related commands'''
-    def hset(self, key, field, value):
-        # https://redis.io/commands/hset/
-        status, msg, data = send_redis_command(self.cid, "hset", key, field, value)
-        return data
+    def hset(self, table, key, data):
+        # https://redis.io/commands/hset/\
+        ret_str = ""
+        for k, v in data.items():
+            status, msg, data = send_redis_command(self.cid, "hset", table+"|"+key, k, v)
+            ret_str += data
+        return ret_str
 
     def hmset(self, multiHash):
         # https://redis.io/commands/hmset/
