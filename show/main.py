@@ -19,6 +19,8 @@ from utilities_common.db import Db
 from datetime import datetime
 import utilities_common.constants as constants
 from utilities_common.general import load_db_config
+from swa.shell import ShellClient
+shellClient = ShellClient()
 
 # mock the redis for unit test purposes #
 try:
@@ -113,21 +115,24 @@ def run_command(command, display_cmd=False, return_cmd=False):
         clicommon.run_command_in_alias_mode(command)
         raise sys.exit(0)
 
-    proc = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE)
+    click.echo(shellClient.run(command))
+    return
 
-    while True:
-        if return_cmd:
-            output = proc.communicate()[0]
-            return output
-        output = proc.stdout.readline()
-        if output == "" and proc.poll() is not None:
-            break
-        if output:
-            click.echo(output.rstrip('\n'))
-
-    rc = proc.poll()
-    if rc != 0:
-        sys.exit(rc)
+    # proc = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE)
+    #
+    # while True:
+    #     if return_cmd:
+    #         output = proc.communicate()[0]
+    #         return output
+    #     output = proc.stdout.readline()
+    #     if output == "" and proc.poll() is not None:
+    #         break
+    #     if output:
+    #         click.echo(output.rstrip('\n'))
+    #
+    # rc = proc.poll()
+    # if rc != 0:
+    #     sys.exit(rc)
 
 # Lazy global class instance for SONiC interface name to alias conversion
 iface_alias_converter = lazy_object_proxy.Proxy(lambda: clicommon.InterfaceAliasConverter())
