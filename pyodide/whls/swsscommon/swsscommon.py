@@ -824,6 +824,8 @@ class ConfigDBConnector_Native(SonicV2Connector_Native):
         return None
 
     def set_entry(self, table, key, data):
+        if len(data) == 0:
+            return self.client.delete(self, table + "|" + key)
         return self.client.hset(table, key, data)
 
     def mod_entry(self, table, key, data):
@@ -963,7 +965,7 @@ class ConfigDBConnector(SonicV2Connector, ConfigDBConnector_Native):
         if typed_data is None:
             return {}
         elif len(typed_data) == 0:
-            return { "NULL": "NULL" }
+            return {}
         raw_data = {}
         for key in typed_data:
             value = typed_data[key]
