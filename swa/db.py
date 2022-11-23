@@ -133,6 +133,10 @@ class DBClient:
 
 
     '''key related commands'''
+    def get(self, key):
+        status, msg, data = send_redis_command(self.cid, "get")
+        return data
+
     def set(self, db_name, _hash, key, val, blocking=False):
         # Is this right?
         db = db_dict[db_name]

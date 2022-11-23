@@ -115,8 +115,9 @@ def run_command(command, display_cmd=False, return_cmd=False):
         clicommon.run_command_in_alias_mode(command)
         raise sys.exit(0)
 
-    click.echo(shellClient.run(command))
-    return
+    val = shellClient.run(command)
+    click.echo(val)
+    return val
 
     # proc = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE)
     #
@@ -1285,7 +1286,7 @@ def version(verbose):
     chassis_info = platform.get_chassis_info()
 
     sys_uptime_cmd = "uptime"
-    sys_uptime = subprocess.Popen(sys_uptime_cmd, shell=True, text=True, stdout=subprocess.PIPE)
+    sys_uptime_output = shellClient.run(sys_uptime_cmd)
 
     sys_date = datetime.now()
 
@@ -1302,12 +1303,12 @@ def version(verbose):
     click.echo("Serial Number: {}".format(chassis_info['serial']))
     click.echo("Model Number: {}".format(chassis_info['model']))
     click.echo("Hardware Revision: {}".format(chassis_info['revision']))
-    click.echo("Uptime: {}".format(sys_uptime.stdout.read().strip()))
+    click.echo("Uptime: {}".format(sys_uptime_output.strip()))
     click.echo("Date: {}".format(sys_date.strftime("%a %d %b %Y %X")))
     click.echo("\nDocker images:")
-    cmd = 'sudo docker images --format "table {{.Repository}}\\t{{.Tag}}\\t{{.ID}}\\t{{.Size}}"'
-    p = subprocess.Popen(cmd, shell=True, text=True, stdout=subprocess.PIPE)
-    click.echo(p.stdout.read())
+    cmd = 'docker images --format "table {{.Repository}}\\t{{.Tag}}\\t{{.ID}}\\t{{.Size}}"'
+    p_output = shellClient.run(cmd)
+    click.echo(p_output)
 
 #
 # 'environment' command ("show environment")
