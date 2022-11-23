@@ -749,7 +749,8 @@ class SonicV2Connector_Native(object):
         return None
 
     def get(self, db_name, _hash, key, blocking=False):
-        return None
+        self.connect(db_name)
+        return self.client.get(_hash + "|" + key)
 
     def hexists(self, db_name, _hash, key):
         return None

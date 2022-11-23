@@ -19,6 +19,8 @@ from utilities_common.db import Db
 from datetime import datetime
 import utilities_common.constants as constants
 from utilities_common.general import load_db_config
+from swa.shell import ShellClient
+shellClient = ShellClient()
 
 # mock the redis for unit test purposes #
 try:
@@ -113,21 +115,25 @@ def run_command(command, display_cmd=False, return_cmd=False):
         clicommon.run_command_in_alias_mode(command)
         raise sys.exit(0)
 
-    proc = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE)
+    val = shellClient.run(command)
+    click.echo(val)
+    return val
 
-    while True:
-        if return_cmd:
-            output = proc.communicate()[0]
-            return output
-        output = proc.stdout.readline()
-        if output == "" and proc.poll() is not None:
-            break
-        if output:
-            click.echo(output.rstrip('\n'))
-
-    rc = proc.poll()
-    if rc != 0:
-        sys.exit(rc)
+    # proc = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE)
+    #
+    # while True:
+    #     if return_cmd:
+    #         output = proc.communicate()[0]
+    #         return output
+    #     output = proc.stdout.readline()
+    #     if output == "" and proc.poll() is not None:
+    #         break
+    #     if output:
+    #         click.echo(output.rstrip('\n'))
+    #
+    # rc = proc.poll()
+    # if rc != 0:
+    #     sys.exit(rc)
 
 # Lazy global class instance for SONiC interface name to alias conversion
 iface_alias_converter = lazy_object_proxy.Proxy(lambda: clicommon.InterfaceAliasConverter())
@@ -1280,7 +1286,7 @@ def version(verbose):
     chassis_info = platform.get_chassis_info()
 
     sys_uptime_cmd = "uptime"
-    sys_uptime = subprocess.Popen(sys_uptime_cmd, shell=True, text=True, stdout=subprocess.PIPE)
+    sys_uptime_output = shellClient.run(sys_uptime_cmd)
 
     sys_date = datetime.now()
 
@@ -1297,12 +1303,12 @@ def version(verbose):
     click.echo("Serial Number: {}".format(chassis_info['serial']))
     click.echo("Model Number: {}".format(chassis_info['model']))
     click.echo("Hardware Revision: {}".format(chassis_info['revision']))
-    click.echo("Uptime: {}".format(sys_uptime.stdout.read().strip()))
+    click.echo("Uptime: {}".format(sys_uptime_output.strip()))
     click.echo("Date: {}".format(sys_date.strftime("%a %d %b %Y %X")))
     click.echo("\nDocker images:")
-    cmd = 'sudo docker images --format "table {{.Repository}}\\t{{.Tag}}\\t{{.ID}}\\t{{.Size}}"'
-    p = subprocess.Popen(cmd, shell=True, text=True, stdout=subprocess.PIPE)
-    click.echo(p.stdout.read())
+    cmd = 'docker images --format "table {{.Repository}}\\t{{.Tag}}\\t{{.ID}}\\t{{.Size}}"'
+    p_output = shellClient.run(cmd)
+    click.echo(p_output)
 
 #
 # 'environment' command ("show environment")
