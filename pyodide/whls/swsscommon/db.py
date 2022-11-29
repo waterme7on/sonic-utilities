@@ -69,7 +69,12 @@ class DBClient:
         return data
 
     def raw_to_list(self, data):
-        return re.sub("[\[\]\"\']", "", data).split(",")
+        ret = []
+        try:
+            ret = re.sub("[\[\]\"\']", "", data).split(",")
+        except:
+            pass
+        return ret
     '''key related commands'''
     def keys(self, *args):
         db = args[0]
